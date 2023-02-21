@@ -51,8 +51,8 @@ by selecting the `Email TOTP Authentication` step. Once added don't forget
 to configure it, at a minimum you'll need to specify an "Alias". See some example
 configuration below:
 
-![Configure 1](https://raw.githubusercontent.com/5-stones/keycloak-email-otp/main//configure-1.png)
-![Configure 2](https://raw.githubusercontent.com/5-stones/keycloak-email-otp/main//configure-2.png)
+![Configure 1](https://raw.githubusercontent.com/5-stones/keycloak-email-otp/main/docs/configure-1.png)
+![Configure 2](https://raw.githubusercontent.com/5-stones/keycloak-email-otp/main/docs/configure-2.png)
 
 ## Example Usage
 
