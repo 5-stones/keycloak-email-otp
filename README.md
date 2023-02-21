@@ -4,6 +4,12 @@ This authenticator allows for user authentication via an emailed TOTP. It's
 based off of the work done [here]( https://github.com/dasniko/keycloak-2fa-sms-authenticator)
 and [here](https://gitlab.com/niroj.adhikary/keycloak-email-otp/-/tree/master).
 
+- [Dev Setup](#dev-setup)
+- [Installation & Configuration](installation--configuration)
+- [Example Usage](#example-usage)
+- [Release](#release)
+- [Contributing](#contributing)
+
 ## Dev Setup
 
 Clone the project:
@@ -32,6 +38,7 @@ be `/opt/keycloak/providers`.
 After placing the plugin in the `providers` directory you'll need to restart
 Keycloak.
 
+
 ## Installation & Configuration
 
 As detailed in the [dev setup](#dev-setup) section, you can manually build and
@@ -53,6 +60,7 @@ configuration below:
 
 ![Configure 1](https://raw.githubusercontent.com/5-stones/keycloak-email-otp/main/docs/configure-1.png)
 ![Configure 2](https://raw.githubusercontent.com/5-stones/keycloak-email-otp/main/docs/configure-2.png)
+
 
 ## Example Usage
 
@@ -109,4 +117,35 @@ that user or set of users with the "Required User Action" of "Update Password".
 Doing so will immediately prompt the user to set a new password the first time
 they login with this TOTP method.
 
+
 ## Release
+
+The standard release command for this project is:
+
+```
+yarn version
+```
+
+This command will:
+
+1. Generate/update the Changelog
+1. Bump the package version
+1. Tag & pushing the commit
+
+e.g.
+
+```
+yarn version --new-version 1.2.17
+yarn version --patch // 1.2.17 -> 1.2.18
+```
+
+#### Why Yarn?
+
+Why are we using yarn on a Java project? Because we have standard tooling around
+Changelog generation and release based around `commitizen` and
+`conventional-changelog`. And we do what we want.
+
+
+## Contributing
+
+See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.

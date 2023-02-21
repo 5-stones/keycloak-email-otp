@@ -5,3 +5,5 @@ target
 copy.sh
 dependency-reduced-pom.xml
 .DS_Store
+node_modules
+
