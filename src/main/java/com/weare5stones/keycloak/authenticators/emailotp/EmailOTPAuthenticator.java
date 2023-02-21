@@ -18,7 +18,7 @@ import org.keycloak.theme.Theme;
 
 public class EmailOTPAuthenticator implements Authenticator {
 
-	private static final String TPL_CODE = "login-email.ftl";
+	private static final String TPL_CODE = "email-totp.ftl";
 	private static final Logger LOG = Logger.getLogger(EmailOTPAuthenticator.class);
 
 	@Override
@@ -59,7 +59,7 @@ public class EmailOTPAuthenticator implements Authenticator {
 					user,
 					emailSubject,
 					emailText,
-					emailText
+					emailText // we currently don't have an HTML body so just use the plain text
 				);
 			}
 
