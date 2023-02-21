@@ -29,6 +29,7 @@ public class EmailOTPAuthenticator implements Authenticator {
 
 		int length = Integer.parseInt(config.getConfig().get("length"));
 		int ttl = Integer.parseInt(config.getConfig().get("ttl"));
+		String emailSubject = config.getConfig().get("emailSubject");
 		Boolean isSimulation = Boolean.parseBoolean(config.getConfig().getOrDefault("simulation", "false"));
 
 		String code = SecretGenerator
@@ -56,7 +57,7 @@ public class EmailOTPAuthenticator implements Authenticator {
 				senderProvider.send(
 					session.getContext().getRealm().getSmtpConfig(),
 					user,
-					"2FA Authentication",
+					emailSubject,
 					emailText,
 					emailText
 				);
