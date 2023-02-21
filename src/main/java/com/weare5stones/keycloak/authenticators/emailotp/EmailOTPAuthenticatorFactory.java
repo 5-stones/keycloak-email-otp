@@ -57,7 +57,6 @@ public class EmailOTPAuthenticatorFactory implements AuthenticatorFactory {
 		return Arrays.asList(
 			new ProviderConfigProperty("length", "Code length", "The number of digits of the generated code.", ProviderConfigProperty.STRING_TYPE, 6),
 			new ProviderConfigProperty("ttl", "Time-to-live", "The time to live in seconds for the code to be valid.", ProviderConfigProperty.STRING_TYPE, "300"),
-			new ProviderConfigProperty("senderId", "SenderId", "The sender ID is displayed as the message sender on the receiving device.", ProviderConfigProperty.STRING_TYPE, "Keycloak"),
 			new ProviderConfigProperty("simulation", "Simulation mode", "In simulation mode, the email won't be sent, but printed to the server logs", ProviderConfigProperty.BOOLEAN_TYPE, true)
 		);
 	}
