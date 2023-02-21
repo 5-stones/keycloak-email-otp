@@ -51,8 +51,8 @@ by selecting the `Email TOTP Authentication` step. Once added don't forget
 to configure it, at a minimum you'll need to specify an "Alias". See some example
 configuration below:
 
-![Configure 1](./configure-1.png)
-![Configure 2](./configure-2.png)
+![Configure 1](https://raw.githubusercontent.com/5-stones/keycloak-email-otp/main//configure-1.png)
+![Configure 2](https://raw.githubusercontent.com/5-stones/keycloak-email-otp/main//configure-2.png)
 
 ## Example Usage
 
@@ -70,14 +70,14 @@ on how to setup such a flow.
 Go to the `Authentication` section for your realm and make a copy of the
 default/built-in "browser" flow. Name it something like "browser email otp".
 
-![Example 1](./docs/example-1.pngexample-2.png)
+![Example 1](https://raw.githubusercontent.com/5-stones/keycloak-email-otp/main//docs/example-1.png)
 
 #### 2. Replace The Username Password Form
 
 Edit the new flow and delete the "Username Password Form" in the "browser forms"
 sub-flow:
 
-![Example 2](./docs/example-2.png)
+![Example 2](https://raw.githubusercontent.com/5-stones/keycloak-email-otp/main//docs/example-2.png)
 
 We'll now add the following to the "browser forms" flow:
 
@@ -93,7 +93,7 @@ To the newly created subflow we'll add two "Alternative" steps:
 
 The final modifications should look like the following:
 
-![Example 3](./docs/example-3.pngexample-2.png)
+![Example 3](https://raw.githubusercontent.com/5-stones/keycloak-email-otp/main//docs/example-3.png)
 
 #### 3. Finishing Up
 
