@@ -70,14 +70,14 @@ on how to setup such a flow.
 Go to the `Authentication` section for your realm and make a copy of the
 default/built-in "browser" flow. Name it something like "browser email otp".
 
-![Example 1](./docs/example-1)
+![Example 1](./docs/example-1.pngexample-2.png)
 
 #### 2. Replace The Username Password Form
 
 Edit the new flow and delete the "Username Password Form" in the "browser forms"
 sub-flow:
 
-![Example 2](./docs/example-2)
+![Example 2](./docs/example-2.png)
 
 We'll now add the following to the "browser forms" flow:
 
@@ -93,7 +93,7 @@ To the newly created subflow we'll add two "Alternative" steps:
 
 The final modifications should look like the following:
 
-![Example 3](./docs/example-3)
+![Example 3](./docs/example-3.pngexample-2.png)
 
 #### 3. Finishing Up
 
