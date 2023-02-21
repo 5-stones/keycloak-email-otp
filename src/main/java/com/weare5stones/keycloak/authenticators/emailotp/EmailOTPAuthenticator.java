@@ -1,5 +1,8 @@
 package com.weare5stones.keycloak.authenticators.emailotp;
 
+import java.util.Locale;
+import javax.ws.rs.core.Response;
+import org.jboss.logging.Logger;
 import org.keycloak.authentication.AuthenticationFlowContext;
 import org.keycloak.authentication.AuthenticationFlowError;
 import org.keycloak.authentication.Authenticator;
@@ -13,12 +16,10 @@ import org.keycloak.models.UserModel;
 import org.keycloak.sessions.AuthenticationSessionModel;
 import org.keycloak.theme.Theme;
 
-import javax.ws.rs.core.Response;
-import java.util.Locale;
-
 public class EmailOTPAuthenticator implements Authenticator {
 
 	private static final String TPL_CODE = "login-email.ftl";
+	private static final Logger LOG = Logger.getLogger(EmailOTPAuthenticator.class);
 
 	@Override
 	public void authenticate(AuthenticationFlowContext context) {
@@ -28,6 +29,7 @@ public class EmailOTPAuthenticator implements Authenticator {
 
 		int length = Integer.parseInt(config.getConfig().get("length"));
 		int ttl = Integer.parseInt(config.getConfig().get("ttl"));
+		Boolean isSimulation = Boolean.parseBoolean(config.getConfig().getOrDefault("simulation", "false"));
 
 		String code = SecretGenerator
 			.getInstance()
@@ -43,15 +45,22 @@ public class EmailOTPAuthenticator implements Authenticator {
 			String emailAuthText = theme.getMessages(locale).getProperty("emailAuthText");
 			String emailText = String.format(emailAuthText, code, Math.floorDiv(ttl, 60));
 
-			DefaultEmailSenderProvider senderProvider = new DefaultEmailSenderProvider(session);
-			senderProvider.send(
-				        session.getContext().getRealm().getSmtpConfig(),
-				        user,
-				        "2FA Authentication",
-				        emailText,
-				        emailText
+			if (isSimulation) {
+				LOG.warn(String.format(
+					"***** SIMULATION MODE ***** Would send a TOTP email to %s with text: %s",
+					user.getEmail(),
+					emailText
+				));
+			} else {
+				DefaultEmailSenderProvider senderProvider = new DefaultEmailSenderProvider(session);
+				senderProvider.send(
+					session.getContext().getRealm().getSmtpConfig(),
+					user,
+					"2FA Authentication",
+					emailText,
+					emailText
 				);
-
+			}
 
 			context.challenge(context.form().setAttribute("realm", context.getRealm()).createForm(TPL_CODE));
 		} catch (Exception e) {
