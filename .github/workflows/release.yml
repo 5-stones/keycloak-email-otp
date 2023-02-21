@@ -29,7 +29,7 @@ jobs:
           prerelease: false
           release_name: ${{ steps.version.outputs.version }}
           tag_name: ${{ github.ref }}
-          body: https://github.com/5-stones/keycloak-group-tokenmapper/blob/main/CHANGELOG.md
+          body: https://github.com/5-stones/keycloak-email-otp/blob/main/CHANGELOG.md
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
@@ -41,6 +41,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./target/com.weare5stones.keycloak.tokenmapper-group-${{ env.TAG }}.jar
-          asset_name: com.weare5stones.keycloak.tokenmapper-group-${{ env.TAG }}.jar
+          asset_path: ./target/com.weare5stones.keycloak.authenticators.emailotp-keycloak-authenticators-emailotp-${{ env.TAG }}.jar
+          asset_name: com.weare5stones.keycloak.authenticators.emailotp-keycloak-authenticators-emailotp-${{ env.TAG }}.jar
           asset_content_type: application/java-archive
