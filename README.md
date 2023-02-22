@@ -5,7 +5,7 @@ based off of the work done [here]( https://github.com/dasniko/keycloak-2fa-sms-a
 and [here](https://gitlab.com/niroj.adhikary/keycloak-email-otp/-/tree/master).
 
 - [Dev Setup](#dev-setup)
-- [Installation & Configuration](installation--configuration)
+- [Installation & Configuration](#installation--configuration)
 - [Example Usage](#example-usage)
 - [Release](#release)
 - [Contributing](#contributing)
