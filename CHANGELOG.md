@@ -1,3 +1,12 @@
+# [1.0.0-rc.4](https://github.com/5-stones/keycloak-email-otp/compare/v1.0.0-rc.3...v1.0.0-rc.4) (2023-02-22)
+
+
+### Features
+
+* **build:** change the name of artifact ([1d3ac00](https://github.com/5-stones/keycloak-email-otp/commit/1d3ac00c2c4fb9d6fb1b87910a28aee10c37dc15))
+
+
+
 # [1.0.0-rc.3](https://github.com/5-stones/keycloak-email-otp/compare/v1.0.0-rc.2...v1.0.0-rc.3) (2023-02-22)
 
 
