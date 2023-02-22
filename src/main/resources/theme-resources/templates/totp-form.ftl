@@ -1,12 +1,12 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayInfo=true; section>
 	<#if section = "header">
-		${msg("emailAuthTitle",realm.displayName)}
+		${msg("emailTOTPFormTitle", realm.displayName)}
 	<#elseif section = "form">
-		<form id="kc-sms-code-login-form" class="${properties.kcFormClass!}" action="${url.loginAction}" method="post">
+		<form id="kc-email-totp-code-login-form" class="${properties.kcFormClass!}" action="${url.loginAction}" method="post">
 			<div class="${properties.kcFormGroupClass!}">
 				<div class="${properties.kcLabelWrapperClass!}">
-					<label for="code" class="${properties.kcLabelClass!}">${msg("emailAuthLabel")}</label>
+					<label for="code" class="${properties.kcLabelClass!}">${msg("emailTOTPFormLabel")}</label>
 				</div>
 				<div class="${properties.kcInputWrapperClass!}">
 					<input type="text" id="code" name="code" class="${properties.kcInputClass!}" autofocus/>
@@ -25,6 +25,6 @@
 			</div>
 		</form>
 	<#elseif section = "info" >
-		${msg("emailAuthInstruction")}
+		${msg("emailTOTPFormInstruction")}
 	</#if>
 </@layout.registrationLayout>
