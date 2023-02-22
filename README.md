@@ -28,7 +28,7 @@ mvn clean install
 The prior command should generate a `.jar` file at the following location:
 
 ```sh
-./target/com.weare5stones.keycloak.authenticators.emailotp-keycloak-authenticators-emailotp-[VERSION_NUMBER].jar
+./target/com.weare5stones.keycloak.authenticators-emailtotp-[VERSION_NUMBER].jar
 ```
 
 This file should be copied into the `/providers` directory of your keycloak
@@ -50,7 +50,7 @@ doing something like the following:
 
 ```sh
 export VERSION=some_version
-wget "https://github.com/5-stones/keycloak-email-otp/releases/download/v$VERSION/com.weare5stones.keycloak.authenticators.emailotp-keycloak-authenticators-emailotp-$VERSION.jar"
+wget "https://github.com/5-stones/keycloak-email-otp/releases/download/v$VERSION/com.weare5stones.keycloak.authenticators-emailtotp-$VERSION.jar"
 ```
 
 Once installed you'll need to add the authenticator to an Authentication flow

@@ -4,8 +4,8 @@
 				 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.weare5stones.keycloak.authenticators.emailotp</groupId>
-	<artifactId>keycloak-authenticators-emailotp</artifactId>
+	<groupId>com.weare5stones.keycloak.authenticators</groupId>
+	<artifactId>emailtotp</artifactId>
 	<version>${package.version}</version>
 
 	<properties>
