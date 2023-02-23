@@ -1,3 +1,12 @@
+# [1.0.0-rc.5](https://github.com/5-stones/keycloak-email-otp/compare/v1.0.0-rc.4...v1.0.0-rc.5) (2023-02-23)
+
+
+### Features
+
+* **messages:** add translations for select authentication page ([5ede3ce](https://github.com/5-stones/keycloak-email-otp/commit/5ede3ce6bb198023037859dcea734c7b9bd6563e))
+
+
+
 # [1.0.0-rc.4](https://github.com/5-stones/keycloak-email-otp/compare/v1.0.0-rc.3...v1.0.0-rc.4) (2023-02-22)
 
 
