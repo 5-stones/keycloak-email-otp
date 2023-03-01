@@ -12,6 +12,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class EmailOTPAuthenticatorFactory implements AuthenticatorFactory {
+  public static final String CONFIG_PROP_LENGTH = "length";
+  public static final String CONFIG_PROP_TTL = "ttl";
+  public static final String CONFIG_PROP_EMAIL_SUBJECT = "emailSubject";
+  public static final String CONFIG_PROP_SIMULATION = "simulation";
+  public static final String CONFIG_PROP_ALLOW_UPPERCASE = "allowUppercase";
+  public static final String CONFIG_PROP_ALLOW_LOWERCASE = "allowLowercase";
+  public static final String CONFIG_PROP_ALLOW_NUMBERS = "allowNumbers";
 
 	@Override
 	public String getId() {
@@ -55,10 +62,13 @@ public class EmailOTPAuthenticatorFactory implements AuthenticatorFactory {
 	@Override
 	public List<ProviderConfigProperty> getConfigProperties() {
 		return Arrays.asList(
-			new ProviderConfigProperty("length", "Code length", "The number of digits of the generated code.", ProviderConfigProperty.STRING_TYPE, 6),
-			new ProviderConfigProperty("ttl", "Time-to-live", "The time to live in seconds for the code to be valid.", ProviderConfigProperty.STRING_TYPE, "300"),
-			new ProviderConfigProperty("emailSubject", "Email Subject", "The subject of the email that sent to the user.", ProviderConfigProperty.STRING_TYPE, "Temporary Authentication Code"),
-			new ProviderConfigProperty("simulation", "Simulation mode", "In simulation mode, the email won't be sent, but printed to the server logs", ProviderConfigProperty.BOOLEAN_TYPE, true)
+			new ProviderConfigProperty(CONFIG_PROP_SIMULATION, "Simulation mode", "In simulation mode, the email won't be sent, but printed to the server logs.", ProviderConfigProperty.BOOLEAN_TYPE, true),
+      new ProviderConfigProperty(CONFIG_PROP_EMAIL_SUBJECT, "Email Subject", "The subject of the email that sent to the user.", ProviderConfigProperty.STRING_TYPE, "Temporary Authentication Code"),
+			new ProviderConfigProperty(CONFIG_PROP_LENGTH, "Code length", "The number of digits of the generated code.", ProviderConfigProperty.STRING_TYPE, 6),
+			new ProviderConfigProperty(CONFIG_PROP_TTL, "Time-to-live", "The time to live in seconds for the code to be valid.", ProviderConfigProperty.STRING_TYPE, "300"),
+			new ProviderConfigProperty(CONFIG_PROP_ALLOW_UPPERCASE, "Allow Uppercase", "Should the TOTP code contain uppercase letters?", ProviderConfigProperty.BOOLEAN_TYPE, true),
+      new ProviderConfigProperty(CONFIG_PROP_ALLOW_LOWERCASE, "Allow Lowercase", "Should the TOTP code contain lowercase letters?", ProviderConfigProperty.BOOLEAN_TYPE, true),
+      new ProviderConfigProperty(CONFIG_PROP_ALLOW_NUMBERS, "Allow Numbers", "Should the TOTP code contain numbers?", ProviderConfigProperty.BOOLEAN_TYPE, true)
 		);
 	}
 

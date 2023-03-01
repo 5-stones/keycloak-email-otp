@@ -23,7 +23,13 @@ public class EmailOTPAuthenticator implements Authenticator {
 
   private static final String TOTP_FORM = "totp-form.ftl";
   private static final String TOTP_EMAIL = "totp-email.ftl";
+  private static final String AUTH_NOTE_CODE = "code";
+  private static final String AUTH_NOTE_TTL = "ttl";
   private static final Logger logger = Logger.getLogger(EmailOTPAuthenticator.class);
+
+  private static final String ALPHA_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  private static final String ALPHA_LOWER = "abcdefghijklmnopqrstuvwxyz";
+  private static final String NUM = "0123456789";
 
   @Override
   public void authenticate(AuthenticationFlowContext context) {
@@ -31,17 +37,18 @@ public class EmailOTPAuthenticator implements Authenticator {
     KeycloakSession session = context.getSession();
     UserModel user = context.getUser();
 
-    int length = Integer.parseInt(config.getConfig().get("length"));
-    int ttl = Integer.parseInt(config.getConfig().get("ttl"));
-    String emailSubject = config.getConfig().get("emailSubject");
-    Boolean isSimulation = Boolean.parseBoolean(config.getConfig().getOrDefault("simulation", "false"));
+    int ttl = Integer.parseInt(config.getConfig().get(EmailOTPAuthenticatorFactory.CONFIG_PROP_TTL));
+    String emailSubject = config.getConfig().get(EmailOTPAuthenticatorFactory.CONFIG_PROP_EMAIL_SUBJECT);
+    Boolean isSimulation = Boolean.parseBoolean(
+        config.getConfig()
+            .getOrDefault(
+                EmailOTPAuthenticatorFactory.CONFIG_PROP_SIMULATION,
+                "false"));
 
-    String code = SecretGenerator
-        .getInstance()
-        .randomString(length);
+    String code = getCode(config);
     AuthenticationSessionModel authSession = context.getAuthenticationSession();
-    authSession.setAuthNote("code", code);
-    authSession.setAuthNote("ttl", Long.toString(System.currentTimeMillis() + (ttl * 1000L)));
+    authSession.setAuthNote(AUTH_NOTE_CODE, code);
+    authSession.setAuthNote(AUTH_NOTE_TTL, Long.toString(System.currentTimeMillis() + (ttl * 1000L)));
 
     try {
       RealmModel realm = context.getRealm();
@@ -83,8 +90,8 @@ public class EmailOTPAuthenticator implements Authenticator {
     String enteredCode = context.getHttpRequest().getDecodedFormParameters().getFirst("code");
 
     AuthenticationSessionModel authSession = context.getAuthenticationSession();
-    String code = authSession.getAuthNote("code");
-    String ttl = authSession.getAuthNote("ttl");
+    String code = authSession.getAuthNote(AUTH_NOTE_CODE);
+    String ttl = authSession.getAuthNote(AUTH_NOTE_TTL);
 
     if (code == null || ttl == null) {
       context.failureChallenge(AuthenticationFlowError.INTERNAL_ERROR,
@@ -131,6 +138,49 @@ public class EmailOTPAuthenticator implements Authenticator {
 
   @Override
   public void close() {
+  }
+
+  private String getCode(AuthenticatorConfigModel config) {
+    int length = Integer.parseInt(config.getConfig().get(EmailOTPAuthenticatorFactory.CONFIG_PROP_LENGTH));
+    Boolean allowUppercase = Boolean.parseBoolean(
+        config.getConfig()
+            .getOrDefault(
+                EmailOTPAuthenticatorFactory.CONFIG_PROP_ALLOW_UPPERCASE,
+                "true"));
+    Boolean allowLowercase = Boolean.parseBoolean(
+        config.getConfig()
+            .getOrDefault(
+                EmailOTPAuthenticatorFactory.CONFIG_PROP_ALLOW_LOWERCASE,
+                "true"));
+    Boolean allowNumbers = Boolean.parseBoolean(
+        config.getConfig()
+            .getOrDefault(
+                EmailOTPAuthenticatorFactory.CONFIG_PROP_ALLOW_NUMBERS,
+                "true"));
+
+    StringBuilder sb = new StringBuilder();
+
+    if (allowUppercase) {
+      sb.append(ALPHA_UPPER);
+    }
+    if (allowLowercase) {
+      sb.append(ALPHA_LOWER);
+    }
+    if (allowNumbers) {
+      sb.append(NUM);
+    }
+
+    // if the string builder is empty allow all charsets as default
+    if (sb.length() == 0) {
+      sb.append(ALPHA_UPPER)
+          .append(ALPHA_LOWER)
+          .append(NUM);
+    }
+
+    char[] symbols = sb.toString().toCharArray();
+    return SecretGenerator
+        .getInstance()
+        .randomString(length, symbols);
   }
 
 }
