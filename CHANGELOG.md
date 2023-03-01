@@ -1,3 +1,12 @@
+# [1.0.0-rc.6](https://github.com/5-stones/keycloak-email-otp/compare/v1.0.0-rc.5...v1.0.0-rc.6) (2023-03-01)
+
+
+### Features
+
+* **config:** allow the ability to configure code character sets:  uppercase, lowercase, and numbers ([288ff6c](https://github.com/5-stones/keycloak-email-otp/commit/288ff6c5d7c78900211be8d2373d5c9f0a5b1724))
+
+
+
 # [1.0.0-rc.5](https://github.com/5-stones/keycloak-email-otp/compare/v1.0.0-rc.4...v1.0.0-rc.5) (2023-02-23)
 
 
