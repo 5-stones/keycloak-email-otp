@@ -13,9 +13,9 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<keycloak.version>16.0.0</keycloak.version>
+		<keycloak.version>21.0.2</keycloak.version>
 		<maven-shade.version>3.2.4</maven-shade.version>
-		<package.version>1.0.0-rc.6</package.version>
+		<package.version>1.0.0-rc.7</package.version>
 	</properties>
 
 	<dependencies>
