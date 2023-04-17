@@ -1,3 +1,12 @@
+# [1.0.0-rc.7](https://github.com/5-stones/keycloak-email-otp/compare/v1.0.0-rc.6...v1.0.0-rc.7) (2023-04-17)
+
+
+### Bug Fixes
+
+* **build:** update keycloak version dependency to fix NoSuchMethodError on 21.0.2 ([6f6fc3b](https://github.com/5-stones/keycloak-email-otp/commit/6f6fc3b3a2f231ea6cb2b5823c1bc69785ee0be2))
+
+
+
 # [1.0.0-rc.6](https://github.com/5-stones/keycloak-email-otp/compare/v1.0.0-rc.5...v1.0.0-rc.6) (2023-03-01)
 
 
