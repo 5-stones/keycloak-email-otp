@@ -1,3 +1,12 @@
+# [1.0.0-rc.8](https://github.com/5-stones/keycloak-email-otp/compare/v1.0.0-rc.7...v1.0.0-rc.8) (2023-07-11)
+
+
+### Features
+
+* **config:** add the ability to specify a max number of retries before forcing a restart ([ba3a147](https://github.com/5-stones/keycloak-email-otp/commit/ba3a1472e1f0a26882cea26258d2f8167c7eaa51))
+
+
+
 # [1.0.0-rc.7](https://github.com/5-stones/keycloak-email-otp/compare/v1.0.0-rc.6...v1.0.0-rc.7) (2023-04-17)
 
 
