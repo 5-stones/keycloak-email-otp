@@ -25,6 +25,7 @@ public class EmailOTPAuthenticator implements Authenticator {
   private static final String TOTP_EMAIL = "totp-email.ftl";
   private static final String AUTH_NOTE_CODE = "code";
   private static final String AUTH_NOTE_TTL = "ttl";
+  private static final String AUTH_NOTE_REMAINING_RETRIES = "remainingRetries";
   private static final Logger logger = Logger.getLogger(EmailOTPAuthenticator.class);
 
   private static final String ALPHA_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -46,9 +47,11 @@ public class EmailOTPAuthenticator implements Authenticator {
                 "false"));
 
     String code = getCode(config);
+    int maxRetries = getMaxRetries(config);
     AuthenticationSessionModel authSession = context.getAuthenticationSession();
     authSession.setAuthNote(AUTH_NOTE_CODE, code);
     authSession.setAuthNote(AUTH_NOTE_TTL, Long.toString(System.currentTimeMillis() + (ttl * 1000L)));
+    authSession.setAuthNote(AUTH_NOTE_REMAINING_RETRIES, Integer.toString(maxRetries));
 
     try {
       RealmModel realm = context.getRealm();
@@ -92,6 +95,8 @@ public class EmailOTPAuthenticator implements Authenticator {
     AuthenticationSessionModel authSession = context.getAuthenticationSession();
     String code = authSession.getAuthNote(AUTH_NOTE_CODE);
     String ttl = authSession.getAuthNote(AUTH_NOTE_TTL);
+    String remainingAttemptsStr = authSession.getAuthNote(AUTH_NOTE_REMAINING_RETRIES);
+    int remainingAttempts = remainingAttemptsStr == null ? 0 : Integer.parseInt(remainingAttemptsStr);
 
     if (code == null || ttl == null) {
       context.failureChallenge(AuthenticationFlowError.INTERNAL_ERROR,
@@ -117,7 +122,16 @@ public class EmailOTPAuthenticator implements Authenticator {
             context.form().setAttribute("realm", context.getRealm())
                 .setError("emailTOTPCodeInvalid").createForm(TOTP_FORM));
       } else if (execution.isConditional() || execution.isAlternative()) {
-        context.attempted();
+        if (remainingAttempts > 0) {
+          // decrement the remaining attempts
+          authSession.setAuthNote(AUTH_NOTE_REMAINING_RETRIES, Integer.toString(remainingAttempts - 1));
+          // display the error message
+          context.failureChallenge(AuthenticationFlowError.INVALID_CREDENTIALS,
+            context.form().setAttribute("realm", context.getRealm())
+                .setError("emailTOTPCodeInvalid").createForm(TOTP_FORM));
+        } else {
+          context.attempted();
+        }
       }
     }
   }
@@ -138,6 +152,15 @@ public class EmailOTPAuthenticator implements Authenticator {
 
   @Override
   public void close() {
+  }
+
+  private int getMaxRetries(AuthenticatorConfigModel config) {
+    int maxRetries = Integer.parseInt(
+        config.getConfig()
+            .getOrDefault(
+                EmailOTPAuthenticatorFactory.CONFIG_PROP_MAX_RETRIES,
+                "3"));
+    return maxRetries;
   }
 
   private String getCode(AuthenticatorConfigModel config) {
