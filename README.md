@@ -53,6 +53,18 @@ export VERSION=some_version
 wget "https://github.com/5-stones/keycloak-email-otp/releases/download/v$VERSION/com.weare5stones.keycloak.authenticators-emailtotp-$VERSION.jar"
 ```
 
+Or in your `Dockerfile`:
+
+```Dockerfile
+ENV EMAIL_TOTP_AUTH_VERSION=some_version
+ADD --chown=keycloak:keycloak \
+  "https://github.com/5-stones/keycloak-email-otp/releases/download/v$EMAIL_TOTP_AUTH_VERSION/com.weare5stones.keycloak.authenticators-emailtotp-$EMAIL_TOTP_AUTH_VERSION.jar" \
+  /opt/keycloak/providers/
+```
+
+**NOTE:** `ADD` is used above as modern `quay.io:keycloak\keycloak` base images
+[don't have a package manager bundled with them](https://www.keycloak.org/server/containers#_installing_additional_rpm_packages).
+
 Once installed you'll need to add the authenticator to an Authentication flow
 by selecting the `Email TOTP Authentication` step. Once added don't forget
 to configure it, at a minimum you'll need to specify an "Alias". See some example
