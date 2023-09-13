@@ -1,3 +1,13 @@
+# [1.0.0](https://github.com/5-stones/keycloak-email-otp/compare/v1.0.0-rc.8...v1.0.0) (2023-09-13)
+
+
+### Features
+
+* **emailotpauthenticator.java:** display remaining attempts ([024ac12](https://github.com/5-stones/keycloak-email-otp/commit/024ac12aace9a4bfab531acb6b2d85a2a6004232))
+* **emailotpauthenticator.java:** update email totp code invalid ([22f5eb3](https://github.com/5-stones/keycloak-email-otp/commit/22f5eb35f289975528039c662f9ff717e0bd45f0))
+
+
+
 # [1.0.0-rc.8](https://github.com/5-stones/keycloak-email-otp/compare/v1.0.0-rc.7...v1.0.0-rc.8) (2023-07-11)
 
 
