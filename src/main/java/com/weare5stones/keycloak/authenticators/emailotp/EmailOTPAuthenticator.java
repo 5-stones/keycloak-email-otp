@@ -128,7 +128,7 @@ public class EmailOTPAuthenticator implements Authenticator {
           // display the error message
           context.failureChallenge(AuthenticationFlowError.INVALID_CREDENTIALS,
             context.form().setAttribute("realm", context.getRealm())
-                .setError(String.format("Invalid code, try again. %s tries left", remainingAttempts)).createForm(TOTP_FORM));
+                .setError("emailTOTPCodeInvalid", remainingAttemptsStr).createForm(TOTP_FORM));
         } else {
           context.attempted();
         }
