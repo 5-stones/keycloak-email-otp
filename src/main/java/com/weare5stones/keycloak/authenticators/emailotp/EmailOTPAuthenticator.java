@@ -2,10 +2,10 @@ package com.weare5stones.keycloak.authenticators.emailotp;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
+import jakarta.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.ws.rs.core.Response;
 import org.jboss.logging.Logger;
 import org.keycloak.authentication.AuthenticationFlowContext;
 import org.keycloak.authentication.AuthenticationFlowError;
@@ -127,7 +127,7 @@ public class EmailOTPAuthenticator implements Authenticator {
           authSession.setAuthNote(AUTH_NOTE_REMAINING_RETRIES, Integer.toString(remainingAttempts - 1));
           // display the error message
           context.failureChallenge(AuthenticationFlowError.INVALID_CREDENTIALS,
-            context.form().setAttribute("realm", context.getRealm())
+              context.form().setAttribute("realm", context.getRealm())
                 .setError("emailTOTPCodeInvalid", remainingAttemptsStr).createForm(TOTP_FORM));
         } else {
           context.attempted();
