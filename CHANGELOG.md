@@ -1,3 +1,18 @@
+# [2.0.0](https://github.com/5-stones/keycloak-email-otp/compare/v1.0.0...v2.0.0) (2023-11-02)
+
+
+### Features
+
+* update for Keycloak 22 ([da56e1b](https://github.com/5-stones/keycloak-email-otp/commit/da56e1bfe0239321aece0750c36cf70c1307d6ed))
+
+
+### BREAKING CHANGES
+
+* Will no longer run on Java<17 and may not run if Keycloak 21 doesn't include
+jakarta.
+
+
+
 # [1.0.0](https://github.com/5-stones/keycloak-email-otp/compare/v1.0.0-rc.8...v1.0.0) (2023-09-13)
 
 
