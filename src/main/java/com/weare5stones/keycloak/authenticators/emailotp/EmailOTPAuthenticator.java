@@ -115,23 +115,18 @@ public class EmailOTPAuthenticator implements Authenticator {
         context.success();
       }
     } else {
-      // invalid
-      AuthenticationExecutionModel execution = context.getExecution();
-      if (execution.isRequired()) {
-        context.failureChallenge(AuthenticationFlowError.INVALID_CREDENTIALS,
-            context.form().setAttribute("realm", context.getRealm())
-                .setError("emailTOTPCodeInvalid").createForm(TOTP_FORM));
-      } else if (execution.isConditional() || execution.isAlternative()) {
-        if (remainingAttempts > 0) {
-          // decrement the remaining attempts
-          authSession.setAuthNote(AUTH_NOTE_REMAINING_RETRIES, Integer.toString(remainingAttempts - 1));
-          // display the error message
+      // Code is invalid
+      remainingAttempts--;
+      authSession.setAuthNote(AUTH_NOTE_REMAINING_RETRIES, Integer.toString(remainingAttempts));
+
+      if (remainingAttempts > 0) {
+          // Inform user of the remaining attempts
           context.failureChallenge(AuthenticationFlowError.INVALID_CREDENTIALS,
-              context.form().setAttribute("realm", context.getRealm())
-                .setError("emailTOTPCodeInvalid", remainingAttemptsStr).createForm(TOTP_FORM));
-        } else {
-          context.attempted();
-        }
+                  context.form().setAttribute("realm", context.getRealm())
+                          .setError("emailTOTPCodeInvalid", Integer.toString(remainingAttempts)).createForm(TOTP_FORM));
+      } else {
+          // Reset login
+          context.resetFlow();
       }
     }
   }
