@@ -1,3 +1,12 @@
+## [2.0.1](https://github.com/5-stones/keycloak-email-otp/compare/v2.0.0...v2.0.1) (2024-11-26)
+
+
+### Bug Fixes
+
+* fix retry counting when set to Required and display of remaining attempts ([6361f64](https://github.com/5-stones/keycloak-email-otp/commit/6361f641f0fdb8dbfa157894682612d82d03a0a3))
+
+
+
 # [2.0.0](https://github.com/5-stones/keycloak-email-otp/compare/v1.0.0...v2.0.0) (2023-11-02)
 
 
