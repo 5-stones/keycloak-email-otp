@@ -12,7 +12,6 @@ import org.keycloak.authentication.AuthenticationFlowError;
 import org.keycloak.authentication.Authenticator;
 import org.keycloak.common.util.SecretGenerator;
 import org.keycloak.email.EmailTemplateProvider;
-import org.keycloak.models.AuthenticationExecutionModel;
 import org.keycloak.models.AuthenticatorConfigModel;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
@@ -116,17 +115,18 @@ public class EmailOTPAuthenticator implements Authenticator {
       }
     } else {
       // Code is invalid
-      remainingAttempts--;
-      authSession.setAuthNote(AUTH_NOTE_REMAINING_RETRIES, Integer.toString(remainingAttempts));
-
       if (remainingAttempts > 0) {
-          // Inform user of the remaining attempts
-          context.failureChallenge(AuthenticationFlowError.INVALID_CREDENTIALS,
-                  context.form().setAttribute("realm", context.getRealm())
-                          .setError("emailTOTPCodeInvalid", Integer.toString(remainingAttempts)).createForm(TOTP_FORM));
+        authSession.setAuthNote(AUTH_NOTE_REMAINING_RETRIES, Integer.toString(remainingAttempts - 1));
+
+        // Inform user of the remaining attempts
+        context.failureChallenge(
+          AuthenticationFlowError.INVALID_CREDENTIALS,
+            context.form()
+                .setAttribute("realm", context.getRealm())
+                .setError("emailTOTPCodeInvalid", Integer.toString(remainingAttempts))
+                .createForm(TOTP_FORM));
       } else {
-          // Reset login
-          context.resetFlow();
+        context.failure(AuthenticationFlowError.INVALID_CREDENTIALS);
       }
     }
   }

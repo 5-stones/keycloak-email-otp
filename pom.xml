@@ -15,7 +15,7 @@
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 		<keycloak.version>22.0.5</keycloak.version>
 		<maven-shade.version>3.2.4</maven-shade.version>
-		<package.version>2.1.0</package.version>
+		<package.version>2.0.1</package.version>
 	</properties>
 
 	<dependencies>

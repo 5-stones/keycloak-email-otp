@@ -53,7 +53,7 @@ public class EmailOTPAuthenticatorFactory implements AuthenticatorFactory {
   @Override
   public AuthenticationExecutionModel.Requirement[] getRequirementChoices() {
     return new AuthenticationExecutionModel.Requirement[] {
-      AuthenticationExecutionModel.Requirement.REQUIRED,
+        AuthenticationExecutionModel.Requirement.REQUIRED,
         AuthenticationExecutionModel.Requirement.ALTERNATIVE,
         AuthenticationExecutionModel.Requirement.DISABLED,
     };
@@ -62,15 +62,25 @@ public class EmailOTPAuthenticatorFactory implements AuthenticatorFactory {
   @Override
   public List<ProviderConfigProperty> getConfigProperties() {
     return Arrays.asList(
-        new ProviderConfigProperty(CONFIG_PROP_SIMULATION, "Simulation mode", "In simulation mode, the email won't be sent, but printed to the server logs.", ProviderConfigProperty.BOOLEAN_TYPE, true),
-        new ProviderConfigProperty(CONFIG_PROP_EMAIL_SUBJECT, "Email Subject", "The subject of the email that sent to the user.", ProviderConfigProperty.STRING_TYPE, "Temporary Authentication Code"),
-        new ProviderConfigProperty(CONFIG_PROP_LENGTH, "Code length", "The number of digits of the generated code.", ProviderConfigProperty.STRING_TYPE, 6),
-        new ProviderConfigProperty(CONFIG_PROP_TTL, "Time-to-live", "The time to live in seconds for the code to be valid.", ProviderConfigProperty.STRING_TYPE, "300"),
-        new ProviderConfigProperty(CONFIG_PROP_MAX_RETRIES, "Max Retries", "This is the maximum number of retries before you get a new code.", ProviderConfigProperty.STRING_TYPE, 3),
-        new ProviderConfigProperty(CONFIG_PROP_ALLOW_UPPERCASE, "Allow Uppercase", "Should the TOTP code contain uppercase letters?", ProviderConfigProperty.BOOLEAN_TYPE, true),
-        new ProviderConfigProperty(CONFIG_PROP_ALLOW_LOWERCASE, "Allow Lowercase", "Should the TOTP code contain lowercase letters?", ProviderConfigProperty.BOOLEAN_TYPE, true),
-        new ProviderConfigProperty(CONFIG_PROP_ALLOW_NUMBERS, "Allow Numbers", "Should the TOTP code contain numbers?", ProviderConfigProperty.BOOLEAN_TYPE, true)
-        );
+        new ProviderConfigProperty(CONFIG_PROP_SIMULATION, "Simulation mode",
+            "In simulation mode, the email won't be sent, but printed to the server logs.",
+            ProviderConfigProperty.BOOLEAN_TYPE, true),
+        new ProviderConfigProperty(CONFIG_PROP_EMAIL_SUBJECT, "Email Subject",
+            "The subject of the email that sent to the user.", ProviderConfigProperty.STRING_TYPE,
+            "Temporary Authentication Code"),
+        new ProviderConfigProperty(CONFIG_PROP_LENGTH, "Code length", "The number of digits of the generated code.",
+            ProviderConfigProperty.STRING_TYPE, 6),
+        new ProviderConfigProperty(CONFIG_PROP_TTL, "Time-to-live",
+            "The time to live in seconds for the code to be valid.", ProviderConfigProperty.STRING_TYPE, "300"),
+        new ProviderConfigProperty(CONFIG_PROP_MAX_RETRIES, "Max Retries",
+            "This is the maximum number of retries, after the 1st attempt, before failing.", ProviderConfigProperty.STRING_TYPE,
+            2),
+        new ProviderConfigProperty(CONFIG_PROP_ALLOW_UPPERCASE, "Allow Uppercase",
+            "Should the TOTP code contain uppercase letters?", ProviderConfigProperty.BOOLEAN_TYPE, true),
+        new ProviderConfigProperty(CONFIG_PROP_ALLOW_LOWERCASE, "Allow Lowercase",
+            "Should the TOTP code contain lowercase letters?", ProviderConfigProperty.BOOLEAN_TYPE, true),
+        new ProviderConfigProperty(CONFIG_PROP_ALLOW_NUMBERS, "Allow Numbers", "Should the TOTP code contain numbers?",
+            ProviderConfigProperty.BOOLEAN_TYPE, true));
   }
 
   @Override
