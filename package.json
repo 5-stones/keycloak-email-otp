@@ -1,6 +1,6 @@
 {
   "name": "keycloak-email-otp",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "main": "index.js",
   "repository": "git@github.com:5-stones/keycloak-email-otp.git",
   "author": "Jacob Spizziri <jspizziri@weare5stones.com>",

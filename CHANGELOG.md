@@ -1,3 +1,12 @@
+# [2.1.0](https://github.com/5-stones/keycloak-email-otp/compare/v2.0.1...v2.1.0) (2024-11-26)
+
+
+### Features
+
+* automatically set email as verified when successful ([19129a2](https://github.com/5-stones/keycloak-email-otp/commit/19129a298c197d0a4079a5f695d6ef703b619b1c))
+
+
+
 ## [2.0.1](https://github.com/5-stones/keycloak-email-otp/compare/v2.0.0...v2.0.1) (2024-11-26)
 
 
