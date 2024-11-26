@@ -111,6 +111,9 @@ public class EmailOTPAuthenticator implements Authenticator {
             context.form().setError("emailTOTPCodeExpired").createErrorPage(Response.Status.BAD_REQUEST));
       } else {
         // valid
+        if (!context.getUser().isEmailVerified()) {
+          context.getUser().setEmailVerified(true);
+        }
         context.success();
       }
     } else {
@@ -120,7 +123,7 @@ public class EmailOTPAuthenticator implements Authenticator {
 
         // Inform user of the remaining attempts
         context.failureChallenge(
-          AuthenticationFlowError.INVALID_CREDENTIALS,
+            AuthenticationFlowError.INVALID_CREDENTIALS,
             context.form()
                 .setAttribute("realm", context.getRealm())
                 .setError("emailTOTPCodeInvalid", Integer.toString(remainingAttempts))
