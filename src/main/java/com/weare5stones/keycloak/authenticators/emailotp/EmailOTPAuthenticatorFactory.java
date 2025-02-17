@@ -67,7 +67,7 @@ public class EmailOTPAuthenticatorFactory implements AuthenticatorFactory {
             ProviderConfigProperty.BOOLEAN_TYPE, true),
         new ProviderConfigProperty(CONFIG_PROP_EMAIL_SUBJECT, "Email Subject",
             "The subject of the email that sent to the user.", ProviderConfigProperty.STRING_TYPE,
-            "קוד אימות זמני"),
+            "Temporary Authentication Code"),
         new ProviderConfigProperty(CONFIG_PROP_LENGTH, "Code length", "The number of digits of the generated code.",
             ProviderConfigProperty.STRING_TYPE, 6),
         new ProviderConfigProperty(CONFIG_PROP_TTL, "Time-to-live",
