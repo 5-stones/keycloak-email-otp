@@ -111,9 +111,9 @@ public class EmailOTPAuthenticator implements Authenticator {
             context.form().setError("emailTOTPCodeExpired").createErrorPage(Response.Status.BAD_REQUEST));
       } else {
         // valid
-        if (!context.getUser().isEmailVerified()) {
-          context.getUser().setEmailVerified(true);
-        }
+        // if (!context.getUser().isEmailVerified()) {
+        //   context.getUser().setEmailVerified(true);
+        // }
         context.success();
       }
     } else {
