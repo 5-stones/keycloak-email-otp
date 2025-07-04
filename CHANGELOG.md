@@ -1,3 +1,12 @@
+## [2.1.1](https://github.com/5-stones/keycloak-email-otp/compare/v2.1.0...v2.1.1) (2025-07-04)
+
+
+### Bug Fixes
+
+* **translations:** remove erroneous s in emailTOTPBody ([ed434db](https://github.com/5-stones/keycloak-email-otp/commit/ed434db5bba33c898f90237a7bd4506dab7d6aa7))
+
+
+
 # [2.1.0](https://github.com/5-stones/keycloak-email-otp/compare/v2.0.1...v2.1.0) (2024-11-26)
 
 
