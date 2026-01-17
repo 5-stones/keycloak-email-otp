@@ -20,6 +20,7 @@ import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
 import org.keycloak.models.UserModel;
 import org.keycloak.sessions.AuthenticationSessionModel;
+import org.keycloak.utils.StringUtil;
 
 public class EmailOTPAuthenticator implements Authenticator {
 
@@ -57,7 +58,7 @@ public class EmailOTPAuthenticator implements Authenticator {
   public void action(AuthenticationFlowContext context) {
 
     String resendEmail = context.getHttpRequest().getDecodedFormParameters().getFirst("resend");
-    if(resendEmail != null && !resendEmail.isEmpty()) {
+    if(!Strings.isNullOrEmpty(resendEmail) && "resend".equals(resendEmail)) {
       try {
         sendEmailForOTP(context);
         context.challenge(context.form().setAttribute("realm", context.getRealm())
@@ -207,31 +208,75 @@ public class EmailOTPAuthenticator implements Authenticator {
     authSession.setAuthNote(AUTH_NOTE_TTL, Long.toString(System.currentTimeMillis() + (ttl * 1000L)));
     authSession.setAuthNote(AUTH_NOTE_REMAINING_RETRIES, Integer.toString(maxRetries));
 
+    RealmModel realm = context.getRealm();
 
-      RealmModel realm = context.getRealm();
-
-      if (isSimulation) {
-        logger.warn(String.format(
-          "***** SIMULATION MODE ***** Would send a TOTP email to %s with code: %s",
-          user.getEmail(),
-          code));
-      } else {
-        String realmName = Strings.isNullOrEmpty(realm.getDisplayName()) ? realm.getName() : realm.getDisplayName();
-        List<Object> subjAttr = ImmutableList.of(realmName);
-        Map<String, Object> attributes = new HashMap<>();
-        attributes.put("code", code);
-        attributes.put("ttl", Math.floorDiv(ttl, 60));
-        session.getProvider(EmailTemplateProvider.class)
-          .setAuthenticationSession(authSession)
-          .setRealm(realm)
-          .setUser(user)
-          .setAttribute("realmName", realmName)
-          .send(
-            emailSubject,
-            subjAttr,
-            TOTP_EMAIL,
-            attributes);
-      }
+    if (isSimulation) {
+      logger.warn(String.format(
+        "***** SIMULATION MODE ***** Would send a TOTP email to %s with code: %s",
+        user.getEmail(),
+        code));
+    } else {
+      String realmName = Strings.isNullOrEmpty(realm.getDisplayName()) ? realm.getName() : realm.getDisplayName();
+      List<Object> subjAttr = ImmutableList.of(realmName);
+      Map<String, Object> attributes = new HashMap<>();
+      attributes.put("code", code);
+      attributes.put("ttl", Math.floorDiv(ttl, 60));
+      session.getProvider(EmailTemplateProvider.class)
+        .setAuthenticationSession(authSession)
+        .setRealm(realm)
+        .setUser(user)
+        .setAttribute("realmName", realmName)
+        .send(
+          emailSubject,
+          subjAttr,
+          TOTP_EMAIL,
+          attributes);
+    }
   }
 
+  private void sendEmailForOTP(AuthenticationFlowContext context, String existingCode) throws EmailException {
+    AuthenticatorConfigModel config = context.getAuthenticatorConfig();
+    KeycloakSession session = context.getSession();
+    UserModel user = context.getUser();
+
+    int ttl = Integer.parseInt(config.getConfig().get(EmailOTPAuthenticatorFactory.CONFIG_PROP_TTL));
+    String emailSubject = config.getConfig().get(EmailOTPAuthenticatorFactory.CONFIG_PROP_EMAIL_SUBJECT);
+    Boolean isSimulation = Boolean.parseBoolean(
+      config.getConfig()
+        .getOrDefault(
+          EmailOTPAuthenticatorFactory.CONFIG_PROP_SIMULATION,
+          "false"));
+
+    String code = getCode(config);
+    int maxRetries = getMaxRetries(config);
+    AuthenticationSessionModel authSession = context.getAuthenticationSession();
+    authSession.setAuthNote(AUTH_NOTE_CODE, code);
+    authSession.setAuthNote(AUTH_NOTE_TTL, Long.toString(System.currentTimeMillis() + (ttl * 1000L)));
+    authSession.setAuthNote(AUTH_NOTE_REMAINING_RETRIES, Integer.toString(maxRetries));
+
+    RealmModel realm = context.getRealm();
+
+    if (isSimulation) {
+      logger.warn(String.format(
+        "***** SIMULATION MODE ***** Would send a TOTP email to %s with code: %s",
+        user.getEmail(),
+        code));
+    } else {
+      String realmName = Strings.isNullOrEmpty(realm.getDisplayName()) ? realm.getName() : realm.getDisplayName();
+      List<Object> subjAttr = ImmutableList.of(realmName);
+      Map<String, Object> attributes = new HashMap<>();
+      attributes.put("code", code);
+      attributes.put("ttl", Math.floorDiv(ttl, 60));
+      session.getProvider(EmailTemplateProvider.class)
+        .setAuthenticationSession(authSession)
+        .setRealm(realm)
+        .setUser(user)
+        .setAttribute("realmName", realmName)
+        .send(
+          emailSubject,
+          subjAttr,
+          TOTP_EMAIL,
+          attributes);
+    }
+  }
 }
