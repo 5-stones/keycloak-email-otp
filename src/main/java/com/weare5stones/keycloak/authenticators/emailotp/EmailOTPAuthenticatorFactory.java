@@ -19,6 +19,7 @@ public class EmailOTPAuthenticatorFactory implements AuthenticatorFactory {
   public static final String CONFIG_PROP_ALLOW_LOWERCASE = "allowLowercase";
   public static final String CONFIG_PROP_ALLOW_NUMBERS = "allowNumbers";
   public static final String CONFIG_PROP_MAX_RETRIES = "maxRetries";
+  public static final String CONFIG_PROP_MAX_RESEND_RETRIES = "maxResendRetries";
 
   @Override
   public String getId() {
@@ -75,6 +76,9 @@ public class EmailOTPAuthenticatorFactory implements AuthenticatorFactory {
         new ProviderConfigProperty(CONFIG_PROP_MAX_RETRIES, "Max Retries",
             "This is the maximum number of retries, after the 1st attempt, before failing.", ProviderConfigProperty.STRING_TYPE,
             2),
+        new ProviderConfigProperty(CONFIG_PROP_MAX_RESEND_RETRIES, "Max Resend Retries",
+          "This is the maximum number of email resend attempts after receiving the initial OTP email.", ProviderConfigProperty.STRING_TYPE,
+          3),
         new ProviderConfigProperty(CONFIG_PROP_ALLOW_UPPERCASE, "Allow Uppercase",
             "Should the TOTP code contain uppercase letters?", ProviderConfigProperty.BOOLEAN_TYPE, true),
         new ProviderConfigProperty(CONFIG_PROP_ALLOW_LOWERCASE, "Allow Lowercase",
