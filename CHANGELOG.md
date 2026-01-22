@@ -1,3 +1,17 @@
+# [2.2.0](https://github.com/5-stones/keycloak-email-otp/compare/v2.1.1...v2.2.0) (2026-01-22)
+
+
+### Bug Fixes
+
+* **messages_en:** add proper single quote escaping ([656a1ce](https://github.com/5-stones/keycloak-email-otp/commit/656a1ce726526fbdc3250d6ce9a4f0c2e2c3b5b9))
+
+
+### Features
+
+* enhance OTP email functionality by adding "resend email" capability ([#22](https://github.com/5-stones/keycloak-email-otp/issues/22)) ([84b8674](https://github.com/5-stones/keycloak-email-otp/commit/84b86744c9cf42d2f9ce47132cab09ca99f5b2e2))
+
+
+
 ## [2.1.1](https://github.com/5-stones/keycloak-email-otp/compare/v2.1.0...v2.1.1) (2025-07-04)
 
 
