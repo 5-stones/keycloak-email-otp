@@ -8,12 +8,11 @@
   "scripts": {
     "build": "mvn clean install",
     "version:pom": "node ./bin/release.js && git add pom.xml",
-    "version": "yarn version:pom && yarn changelog && git add CHANGELOG.md",
+    "version": "npm run version:pom && npm run changelog && git add CHANGELOG.md",
     "postversion": "git push && git push --tags",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
   },
   "devDependencies": {
     "conventional-changelog-cli": "^2.2.2"
-  },
-  "packageManager": "yarn@3.6.4"
+  }
 }

@@ -135,7 +135,7 @@ they login with this TOTP method.
 The standard release command for this project is:
 
 ```
-yarn version
+npm version
 ```
 
 This command will:
@@ -147,8 +147,8 @@ This command will:
 e.g.
 
 ```
-yarn version --new-version 1.2.17
-yarn version --patch // 1.2.17 -> 1.2.18
+npm version 1.2.17
+npm version patch // 1.2.17 -> 1.2.18
 ```
 
 #### Why Yarn?
