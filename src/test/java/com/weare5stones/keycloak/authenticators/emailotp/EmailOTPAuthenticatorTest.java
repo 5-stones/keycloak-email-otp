@@ -317,8 +317,8 @@ class EmailOTPAuthenticatorTest {
     final MultivaluedMap<String, String> formParams = new MultivaluedHashMap<>();
     final Map<String, String> authNotes = new HashMap<>();
     final Map<String, String> configMap = new HashMap<>();
-    final Response formResponse = Response.ok().build();
-    final Response errorResponse = Response.serverError().build();
+    final Response formResponse = mock(Response.class);
+    final Response errorResponse = mock(Response.class);
 
     TestContext() {
       configMap.put(EmailOTPAuthenticatorFactory.CONFIG_PROP_TTL, "300");

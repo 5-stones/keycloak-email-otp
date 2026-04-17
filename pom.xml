@@ -13,10 +13,10 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
 		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<keycloak.version>22.0.5</keycloak.version>
+		<keycloak.version>26.6.1</keycloak.version>
 		<maven-shade.version>3.2.4</maven-shade.version>
 		<maven-surefire.version>3.2.5</maven-surefire.version>
-		<jacoco.version>0.8.12</jacoco.version>
+		<jacoco.version>0.8.13</jacoco.version>
 		<junit.version>5.10.2</junit.version>
 		<mockito.version>5.12.0</mockito.version>
 		<package.version>2.2.0</package.version>
