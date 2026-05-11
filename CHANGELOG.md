@@ -1,3 +1,12 @@
+# [2.3.0](https://github.com/5-stones/keycloak-email-otp/compare/v2.2.0...v2.3.0) (2026-05-11)
+
+
+### Features
+
+* **messages_es:** add spanish translation in theme messages resources folder ([be02196](https://github.com/5-stones/keycloak-email-otp/commit/be0219621bb5e99467d546821f25151b40c82761))
+
+
+
 # [2.2.0](https://github.com/5-stones/keycloak-email-otp/compare/v2.1.1...v2.2.0) (2026-01-22)
 
 

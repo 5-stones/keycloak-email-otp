@@ -19,7 +19,7 @@
 		<jacoco.version>0.8.13</jacoco.version>
 		<junit.version>5.10.2</junit.version>
 		<mockito.version>5.12.0</mockito.version>
-		<package.version>2.2.0</package.version>
+		<package.version>2.3.0</package.version>
 	</properties>
 
 	<dependencies>
