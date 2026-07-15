@@ -294,6 +294,49 @@ class EmailOTPAuthenticatorTest {
     verify(tc.emailTemplateProvider).send(anyString(), any(), anyString(), any());
   }
 
+  @Test
+  void maskEmailMasksLocalPartAndKeepsDomain() throws Exception {
+    EmailOTPAuthenticator authenticator = new EmailOTPAuthenticator();
+    Method maskEmail = EmailOTPAuthenticator.class.getDeclaredMethod("maskEmail", String.class);
+    maskEmail.setAccessible(true);
+
+    assertEquals("**@example.org", maskEmail.invoke(authenticator, "ab@example.org"));
+    assertEquals("***@example.org", maskEmail.invoke(authenticator, "abc@example.org"));
+    assertEquals("j**e@example.org", maskEmail.invoke(authenticator, "jane@example.org"));
+    assertEquals("ja*es@example.org", maskEmail.invoke(authenticator, "janes@example.org"));
+    assertEquals("jon**han@example.org", maskEmail.invoke(authenticator, "jonathan@example.org"));
+    assertEquals("", maskEmail.invoke(authenticator, "no-at-sign"));
+    assertEquals("", maskEmail.invoke(authenticator, new Object[] { null }));
+  }
+
+  @Test
+  void challengeFormExposesMaskedEmailCodeLengthAndTtl() {
+    EmailOTPAuthenticator authenticator = new EmailOTPAuthenticator();
+    TestContext tc = new TestContext();
+    tc.authNotes.put("emailSent", "true");
+
+    authenticator.authenticate(tc.context);
+
+    verify(tc.formsProvider).setAttribute("maskedEmail", "u**r@example.org");
+    verify(tc.formsProvider).setAttribute("otpCodeLength", "6");
+    verify(tc.formsProvider).setAttribute("ttlSeconds", "300");
+  }
+
+  @Test
+  void resendAllowanceUsesMaxResendRetriesConfig() {
+    EmailOTPAuthenticator authenticator = new EmailOTPAuthenticator();
+    TestContext tc = new TestContext();
+    tc.configMap.put(EmailOTPAuthenticatorFactory.CONFIG_PROP_MAX_RETRIES, "0");
+    tc.configMap.put(EmailOTPAuthenticatorFactory.CONFIG_PROP_MAX_RESEND_RETRIES, "2");
+    tc.formParams.putSingle("resend", "resend");
+    tc.authNotes.put("code", "ABC123");
+
+    authenticator.action(tc.context);
+
+    verify(tc.context).challenge(tc.formResponse);
+    assertEquals("2", tc.authNotes.get("remainingResendRetries"));
+  }
+
   private static AuthenticatorConfigModel newConfig(String length, String upper, String lower, String numbers) {
     AuthenticatorConfigModel cfg = new AuthenticatorConfigModel();
     Map<String, String> values = new HashMap<>();

@@ -15,6 +15,7 @@ import org.keycloak.authentication.Authenticator;
 import org.keycloak.common.util.SecretGenerator;
 import org.keycloak.email.EmailException;
 import org.keycloak.email.EmailTemplateProvider;
+import org.keycloak.forms.login.LoginFormsProvider;
 import org.keycloak.models.AuthenticatorConfigModel;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
@@ -45,8 +46,7 @@ public class EmailOTPAuthenticator implements Authenticator {
         sendEmailForOTP(context, false);
         context.getAuthenticationSession().setAuthNote(AUTH_NOTE_EMAIL_SENT, "true");
       }
-      context.challenge(context.form().setAttribute("realm", context.getRealm())
-        .createForm(TOTP_FORM));
+      context.challenge(challengeForm(context).createForm(TOTP_FORM));
     } catch (Exception e) {
       logger.error("An error occurred when attempting to email an TOTP auth:", e);
       context.failureChallenge(AuthenticationFlowError.INTERNAL_ERROR,
@@ -71,8 +71,7 @@ public class EmailOTPAuthenticator implements Authenticator {
         if(remainingResendAttempts <= 0) {
           context.failureChallenge(
             AuthenticationFlowError.INVALID_CREDENTIALS,
-            context.form()
-              .setAttribute("realm", context.getRealm())
+            challengeForm(context)
               .setError("emailTOTPResendRetriesLimitReached")
               .createForm(TOTP_FORM)
           );
@@ -81,7 +80,7 @@ public class EmailOTPAuthenticator implements Authenticator {
 
         sendEmailForOTP(context, true);
         authSession.setAuthNote(AUTH_NOTE_REMAINING_RESEND_RETRIES, Integer.toString(remainingResendAttempts-1));
-        context.challenge(context.form().setAttribute("realm", context.getRealm())
+        context.challenge(challengeForm(context)
             .setInfo("otpMailSentAgain")
           .createForm(TOTP_FORM));
       } catch (Exception e) {
@@ -127,8 +126,7 @@ public class EmailOTPAuthenticator implements Authenticator {
         // Inform user of the remaining attempts
         context.failureChallenge(
             AuthenticationFlowError.INVALID_CREDENTIALS,
-            context.form()
-                .setAttribute("realm", context.getRealm())
+            challengeForm(context)
                 .setError("emailTOTPCodeInvalid", Integer.toString(remainingAttempts))
                 .createForm(TOTP_FORM));
       } else {
@@ -167,10 +165,47 @@ public class EmailOTPAuthenticator implements Authenticator {
   private int getMaxResendRetries(AuthenticatorConfigModel config) {
     int maxResendRetries = Integer.parseInt(
       config.getConfig().getOrDefault(
-        EmailOTPAuthenticatorFactory.CONFIG_PROP_MAX_RETRIES, "3"
+        EmailOTPAuthenticatorFactory.CONFIG_PROP_MAX_RESEND_RETRIES, "3"
       )
     );
     return maxResendRetries;
+  }
+
+  private LoginFormsProvider challengeForm(AuthenticationFlowContext context) {
+    AuthenticatorConfigModel config = context.getAuthenticatorConfig();
+    return context.form()
+        .setAttribute("realm", context.getRealm())
+        .setAttribute("maskedEmail", maskEmail(context.getUser().getEmail()))
+        .setAttribute("otpCodeLength", Integer.toString(getCodeLength(config)))
+        .setAttribute("ttlSeconds", Integer.toString(getTtlSeconds(config)));
+  }
+
+  private int getCodeLength(AuthenticatorConfigModel config) {
+    return Integer.parseInt(
+        config.getConfig().getOrDefault(EmailOTPAuthenticatorFactory.CONFIG_PROP_LENGTH, "6"));
+  }
+
+  private int getTtlSeconds(AuthenticatorConfigModel config) {
+    return Integer.parseInt(
+        config.getConfig().getOrDefault(EmailOTPAuthenticatorFactory.CONFIG_PROP_TTL, "300"));
+  }
+
+  private String maskEmail(String email) {
+    if (Strings.isNullOrEmpty(email) || !email.contains("@")) {
+      return "";
+    }
+    String[] parts = email.split("@", 2);
+    String local = parts[0];
+    String domain = parts[1];
+    int len = local.length();
+    if (len <= 3) {
+      return "*".repeat(len) + "@" + domain;
+    }
+    int visible = len >= 7 ? 3 : (len >= 5 ? 2 : 1);
+    return local.substring(0, visible)
+        + "*".repeat(len - visible * 2)
+        + local.substring(len - visible)
+        + "@" + domain;
   }
 
   private String getCode(AuthenticatorConfigModel config) {
@@ -254,6 +289,11 @@ public class EmailOTPAuthenticator implements Authenticator {
       Map<String, Object> attributes = new HashMap<>();
       attributes.put("code", code);
       attributes.put("ttl", Math.floorDiv(ttl, 60));
+      attributes.put("ttlSeconds", ttl);
+      attributes.put("otpCodeLength", getCodeLength(config));
+      attributes.put("maskedEmail", maskEmail(user.getEmail()));
+      attributes.put("firstName", Optional.ofNullable(user.getFirstName()).orElse(""));
+      attributes.put("lastName", Optional.ofNullable(user.getLastName()).orElse(""));
       session.getProvider(EmailTemplateProvider.class)
         .setAuthenticationSession(authSession)
         .setRealm(realm)
